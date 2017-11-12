@@ -1,5 +1,6 @@
 package com.example.johnmunyi.locateandtextme;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("Mr", "Map show button was clicked");
+                Intent intent = new Intent(getBaseContext(), MapsActivity.class);
+                startActivity(intent);
             }
         });
 

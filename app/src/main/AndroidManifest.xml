@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.johnmunyi.locateandtextme">
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- <uses-feature -->
+    <!-- android:glEsVersion="0x00020000" -->
+    <!-- android:required="true" -->
+    <!-- /> -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,15 +24,14 @@
             </intent-filter>
         </activity>
 
-        <!--Maps Android Key-->
+        <!-- Maps Android Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCszJyfhV8O08MMUZJAaK8uL1dR6yzr7gU"/>
-        <!--maps end-->
+            android:value="AIzaSyCszJyfhV8O08MMUZJAaK8uL1dR6yzr7gU" />
+        <!-- maps end -->
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
     </application>
 
-    <!--<uses-feature-->
-        <!--android:glEsVersion="0x00020000"-->
-        <!--android:required="true"-->
-        <!--/>-->
 </manifest>
