@@ -52,9 +52,10 @@ public class MainActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(MainActivity.this,
                             new String[]{android.Manifest.permission.RECEIVE_SMS}, 1);
                 }
+
                 Log.d("Mr", "Text Button clicked");
                 String strPhone = "250734598922";
-                String strMessage = "";
+                String strMessage = "Location details: ";
                 SmsManager sms = SmsManager.getDefault();
                 sms.sendTextMessage(strPhone, null, strMessage, null, null);
 
