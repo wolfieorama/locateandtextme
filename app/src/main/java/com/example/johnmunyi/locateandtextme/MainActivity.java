@@ -1,20 +1,27 @@
 package com.example.johnmunyi.locateandtextme;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button mapMe, textMe;
     private TextView lati, longi;
     private Layout mapDisplay;
+    private String strPhone, strMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +43,22 @@ public class MainActivity extends AppCompatActivity {
         textMe.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(ActivityCompat.checkSelfPermission(getApplicationContext(),
+                        android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(getApplicationContext(),
+                        android.Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{android.Manifest.permission.SEND_SMS}, 1);
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{android.Manifest.permission.RECEIVE_SMS}, 1);
+                }
                 Log.d("Mr", "Text Button clicked");
+                String strPhone = "250734598922";
+                String strMessage = "";
+                SmsManager sms = SmsManager.getDefault();
+                sms.sendTextMessage(strPhone, null, strMessage, null, null);
+
+                Toast.makeText(getApplicationContext(), "Sent.", Toast.LENGTH_SHORT).show();
             }
         });
     }
