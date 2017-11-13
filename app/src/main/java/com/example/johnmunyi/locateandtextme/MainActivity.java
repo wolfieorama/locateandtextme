@@ -2,6 +2,8 @@ package com.example.johnmunyi.locateandtextme;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,14 +16,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
-
 public class MainActivity extends AppCompatActivity {
 
     private Button mapMe, textMe;
     private TextView lati, longi;
     private Layout mapDisplay;
     private String strPhone, strMessage;
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +53,10 @@ public class MainActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(MainActivity.this,
                             new String[]{android.Manifest.permission.RECEIVE_SMS}, 1);
                 }
-
                 Log.d("Mr", "Text Button clicked");
                 String strPhone = "250734598922";
-                String strMessage = "Location details: ";
                 SmsManager sms = SmsManager.getDefault();
                 sms.sendTextMessage(strPhone, null, strMessage, null, null);
-
                 Toast.makeText(getApplicationContext(), "Sent.", Toast.LENGTH_SHORT).show();
             }
         });
