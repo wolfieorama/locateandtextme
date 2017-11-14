@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -16,6 +17,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import static com.example.johnmunyi.locateandtextme.MapsActivity.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
+import static java.lang.String.valueOf;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button mapMe, textMe;
@@ -23,6 +31,11 @@ public class MainActivity extends AppCompatActivity {
     private Layout mapDisplay;
     private String strPhone, strMessage;
     private LocationManager locationManager;
+    private Location location;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private boolean mLocationPermissionGranted;
+    private Location mCurrentLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +43,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mapMe = (Button) findViewById(R.id.mapMe);
         textMe = (Button) findViewById(R.id.textMe);
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+            mFusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    mCurrentLocation = location;
+                }
+            });
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
 
         mapMe.setOnClickListener(new OnClickListener()
         {
@@ -53,9 +83,12 @@ public class MainActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(MainActivity.this,
                             new String[]{android.Manifest.permission.RECEIVE_SMS}, 1);
                 }
+                MapsActivity mapper = new MapsActivity();
                 Log.d("Mr", "Text Button clicked");
+                String details1 = valueOf(mCurrentLocation.getLatitude());
+                String details2 = valueOf(mCurrentLocation.getLongitude());
                 String strPhone = "250734598922";
-                String strMessage = "Location details: ";
+                String strMessage = "Location details:" + details1 + " " + details2;
                 SmsManager sms = SmsManager.getDefault();
                 sms.sendTextMessage(strPhone, null, strMessage, null, null);
                 Toast.makeText(getApplicationContext(), "Sent.", Toast.LENGTH_SHORT).show();
